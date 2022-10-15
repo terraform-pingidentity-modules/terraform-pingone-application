@@ -8,7 +8,7 @@ This module provides a set of reusable submodules with which to create PingOne A
 
 ```hcl
 module "spa_application" {
-  source = "terraform-pingidentity-modules/application/pingone/modules/single-page-application"
+  source = "terraform-pingidentity-modules/application/pingone//modules/single-page-application"
 
   environment_id = pingone_environment.my_environment.id
 
