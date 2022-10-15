@@ -74,4 +74,4 @@ module "spa_application" {
 
 ## Examples
 
-- single-page-application - Create a new Single Page Application application with the default settings of Authorization Code grant type with PKCE S256 required token authentication
+- [single-page-application](https://github.com/terraform-pingidentity-modules/terraform-pingone-application/tree/main/examples/single-page-application) - Create a new Single Page Application application with the default settings of Authorization Code grant type with PKCE S256 required token authentication
