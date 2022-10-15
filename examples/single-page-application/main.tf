@@ -13,7 +13,7 @@ provider "pingone" {
 #########################################################################
 
 module "spa_application" {
-  source = "../../modules/single-page-application"
+  source = "terraform-pingidentity-modules/application/pingone/modules/single-page-application"
 
   environment_id = pingone_environment.my_environment.id
 
