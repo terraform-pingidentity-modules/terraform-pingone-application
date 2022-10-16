@@ -51,15 +51,15 @@ variable "group_access_control_id_list" {
 }
 
 variable "grant_types" {
-  description = "A list that specifies the grant type for the authorization request. Options are `AUTHORIZATION_CODE`, `IMPLICIT`, `REFRESH_TOKEN` and `CLIENT_CREDENTIALS`.  Defaults to `AUTHORIZATION_CODE`."
+  description = "A list that specifies the grant type for the authorization request. Options are `AUTHORIZATION_CODE`, `IMPLICIT`, `REFRESH_TOKEN` and `CLIENT_CREDENTIALS`.  Defaults to `CLIENT_CREDENTIALS`."
   type        = list(string)
-  default     = ["AUTHORIZATION_CODE"]
+  default     = ["CLIENT_CREDENTIALS"]
 }
 
 variable "response_types" {
-  description = "A list that specifies the code or token type returned by an authorization request. Note that `CODE` cannot be used in an authorization request with `TOKEN` or `ID_TOKEN` because PingOne does not currently support OIDC hybrid flows.  Defaults to `CODE`."
+  description = "A list that specifies the code or token type returned by an authorization request. Note that `CODE` cannot be used in an authorization request with `TOKEN` or `ID_TOKEN` because PingOne does not currently support OIDC hybrid flows."
   type        = list(string)
-  default     = ["CODE"]
+  default     = []
 }
 
 variable "pkce_enforcement" {
@@ -77,6 +77,7 @@ variable "token_endpoint_authn_method" {
 variable "redirect_uris" {
   description = "A set of strings that specifies the callback URI for the authentication response."
   type        = list(string)
+  default     = null
 }
 
 variable "post_logout_redirect_uris" {

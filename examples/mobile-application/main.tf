@@ -36,53 +36,9 @@ module "mobile_native_application" {
   mobile_app_integrity_detection_cache_duration_minutes = 1440 // 24 hours
   mobile_app_universal_app_link                         = var.mobile_app_universal_app_link
 
-  group_access_control_id_list = [
-    pingone_group.my_group.id
-  ]
-  
-  redirect_uris = [
-    "https://bxretail.org",
-    "https://bxretail.org/signon",
-    "https://www.bxretail.org",
-    "https://www.bxretail.org/signon",
-  ]
-  
-  post_logout_redirect_uris = [
-    "https://bxretail.org/signoff",
-    "https://www.bxretail.org/signoff"
-  ]
-
-  attribute_mapping = [
-    {
-      name     = "email"
-      value    = "$${user.email}"
-      required = true
-    },
-    {
-      name  = "full_name"
-      value = "$${user.name.given + ', ' + user.name.family}"
-    },
-    {
-      name  = "first_name"
-      value = "$${user.name.given}"
-    },
-    {
-      name  = "last_name"
-      value = "$${user.name.family}"
-    },
-  ]
-
   sign_on_policy_assignment_id_list = [
-    pingone_sign_on_policy.my_policy_1.id,
-    pingone_sign_on_policy.my_policy_2.id,
+    pingone_sign_on_policy.my_policy_mfa.id
   ]
-
-  openid_scopes = [
-    "email",
-    "profile",
-    "address"
-  ]
-
 }
 
 
@@ -108,28 +64,18 @@ resource "pingone_environment" "my_environment" {
 }
 
 #########################################################################
-# Supporting Group
+# Supporting Sign on Policy
 #########################################################################
 
-resource "pingone_group" "my_group" {
+resource "pingone_sign_on_policy" "my_policy_mfa" {
   environment_id = pingone_environment.my_environment.id
 
-  name = "My Mobile App Group"
+  name        = "Sign_On_Mobile_MFA"
 }
 
-#########################################################################
-# Supporting Sign on Policy 1
-#########################################################################
-
-resource "pingone_sign_on_policy" "my_policy_1" {
-  environment_id = pingone_environment.my_environment.id
-
-  name        = "Sign_On_1"
-}
-
-resource "pingone_sign_on_policy_action" "my_policy_1_first_factor" {
+resource "pingone_sign_on_policy_action" "my_policy_mfa" {
   environment_id    = pingone_environment.my_environment.id
-  sign_on_policy_id = pingone_sign_on_policy.my_policy_1.id
+  sign_on_policy_id = pingone_sign_on_policy.my_policy_mfa.id
 
   priority = 1
 
@@ -137,50 +83,63 @@ resource "pingone_sign_on_policy_action" "my_policy_1_first_factor" {
     last_sign_on_older_than_seconds = 86400 // 24 hours
   }
 
-  login {
-    recovery_enabled = true
+  mfa {
+    device_sign_on_policy_id = pingone_mfa_policy.mfa_policy.id
   }
 
 }
 
+
 #########################################################################
-# Supporting Sign on Policy 2
+# Supporting MFA Policy
 #########################################################################
 
-resource "pingone_sign_on_policy" "my_policy_2" {
+resource "pingone_mfa_policy" "mfa_policy" {
   environment_id = pingone_environment.my_environment.id
+  name           = "Sample Mobile Authenticator Policy"
 
-  name        = "Sign_On_2"
+  sms {
+    enabled = false
+  }
+
+  voice {
+    enabled = false
+  }
+
+  email {
+    enabled = false
+  }
+
+  mobile {
+    enabled = true
+
+    otp_failure_count = 5
+
+    application {
+      id = module.mobile_native_application.id
+
+      push_enabled = true
+      otp_enabled  = true
+
+      device_authorization_enabled = true
+      device_authorization_extra_verification = "restrictive"
+
+      auto_enrollment_enabled = true
+
+      integrity_detection = "permissive"
+    }
+  }
+
+  totp {
+    enabled = false
+  }
+
+  security_key {
+    enabled = false
+  }
+
+  platform {
+    enabled = false
+  }
+
 }
-
-resource "pingone_sign_on_policy_action" "my_policy_2_identifier_first" {
-  environment_id    = pingone_environment.my_environment.id
-  sign_on_policy_id = pingone_sign_on_policy.my_policy_2.id
-
-  priority = 1
-
-  conditions {
-    last_sign_on_older_than_seconds = 604800 // 7 days
-  }
-
-  identifier_first {
-    recovery_enabled = true
-  }
-}
-
-resource "pingone_sign_on_policy_action" "my_policy_2_first_factor" {
-  environment_id    = pingone_environment.my_environment.id
-  sign_on_policy_id = pingone_sign_on_policy.my_policy_2.id
-
-  priority = 2
-
-  conditions {
-    last_sign_on_older_than_seconds = 86400 // 24 hours
-  }
-
-  login {
-    recovery_enabled = true
-  }
-}
-
-

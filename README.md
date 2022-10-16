@@ -31,53 +31,9 @@ module "mobile_native_application" {
   mobile_app_integrity_detection_cache_duration_minutes = 1440 // 24 hours
   mobile_app_universal_app_link                         = var.mobile_app_universal_app_link
 
-  group_access_control_id_list = [
-    pingone_group.my_group.id
-  ]
-  
-  redirect_uris = [
-    "https://bxretail.org",
-    "https://bxretail.org/signon",
-    "https://www.bxretail.org",
-    "https://www.bxretail.org/signon",
-  ]
-  
-  post_logout_redirect_uris = [
-    "https://bxretail.org/signoff",
-    "https://www.bxretail.org/signoff"
-  ]
-
-  attribute_mapping = [
-    {
-      name     = "email"
-      value    = "$${user.email}"
-      required = true
-    },
-    {
-      name  = "full_name"
-      value = "$${user.name.given + ', ' + user.name.family}"
-    },
-    {
-      name  = "first_name"
-      value = "$${user.name.given}"
-    },
-    {
-      name  = "last_name"
-      value = "$${user.name.family}"
-    },
-  ]
-
   sign_on_policy_assignment_id_list = [
-    pingone_sign_on_policy.my_policy_1.id,
-    pingone_sign_on_policy.my_policy_2.id,
+    pingone_sign_on_policy.my_policy_mfa.id
   ]
-
-  openid_scopes = [
-    "email",
-    "profile",
-    "address"
-  ]
-
 }
 ```
 
@@ -92,6 +48,9 @@ module "native_application" {
   name           = "Example Native Application"
   description    = "Example Native Application"
   enabled        = true
+
+  grant_types     = ["AUTHORIZATION_CODE"]
+  response_types  = ["CODE"]
   
   group_access_control_id_list = [
     pingone_group.my_group.id

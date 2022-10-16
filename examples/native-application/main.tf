@@ -13,14 +13,16 @@ provider "pingone" {
 #########################################################################
 
 module "native_application" {
-  //source = "terraform-pingidentity-modules/application/pingone//modules/native-application"
-  source = "../../modules/native-application"
-
+  source = "terraform-pingidentity-modules/application/pingone//modules/native-application"
+  
   environment_id = pingone_environment.my_environment.id
 
   name           = "Example Native Application"
   description    = "Example Native Application"
   enabled        = true
+
+  grant_types     = ["AUTHORIZATION_CODE"]
+  response_types  = ["CODE"]
   
   group_access_control_id_list = [
     pingone_group.my_group.id
