@@ -13,7 +13,7 @@ provider "pingone" {
 #########################################################################
 
 module "mobile_native_application" {
-  source = "terraform-pingidentity-modules/application/pingone//modules/native-application"
+  source = "terraform-pingidentity-modules/sso-application/pingone//modules/native-application"
   
   environment_id = pingone_environment.my_environment.id
 

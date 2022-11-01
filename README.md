@@ -8,7 +8,7 @@ This module provides a set of reusable submodules with which to create PingOne A
 
 ```hcl
 module "mobile_native_application" {
-  source = "terraform-pingidentity-modules/application/pingone//modules/native-application"
+  source = "terraform-pingidentity-modules/sso-application/pingone//modules/native-application"
   
   environment_id = pingone_environment.my_environment.id
 
@@ -41,7 +41,7 @@ module "mobile_native_application" {
 
 ```hcl
 module "native_application" {
-  source = "terraform-pingidentity-modules/application/pingone//modules/native-application"
+  source = "terraform-pingidentity-modules/sso-application/pingone//modules/native-application"
   
   environment_id = pingone_environment.my_environment.id
 
@@ -106,7 +106,7 @@ module "native_application" {
 
 ```hcl
 module "spa_application" {
-  source = "terraform-pingidentity-modules/application/pingone//modules/single-page-application"
+  source = "terraform-pingidentity-modules/sso-application/pingone//modules/single-page-application"
 
   environment_id = pingone_environment.my_environment.id
 
