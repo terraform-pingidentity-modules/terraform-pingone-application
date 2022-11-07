@@ -9,15 +9,14 @@ locals {
 # Application Icon
 #########################################################################
 
-# Due in provider release 0.7.0
-# resource "pingone_image" "this" {
+resource "pingone_image" "this" {
 
-#   count = var.image_file_location != null ? 1 : 0
+  count = var.image_file_location != null ? 1 : 0
 
-#   environment_id = var.environment_id
+  environment_id = var.environment_id
 
-#   image_file_base64 = filebase64(var.image_file_location)
-# }
+  image_file_base64 = filebase64(var.image_file_location)
+}
 
 #########################################################################
 # Application
@@ -33,15 +32,14 @@ resource "pingone_application" "this" {
 
   login_page_url = var.login_page_url != null && var.login_page_url != "" ? var.login_page_url : null
 
-  # Due in provider release 0.7.0
-  # dynamic "icon" {
-  #   for_each = pingone_image.this
+  dynamic "icon" {
+    for_each = pingone_image.this
 
-  #   content {
-  #     id   = icon.id
-  #     href = icon.uploaded_image[0].href
-  #   }
-  # }
+    content {
+      id   = pingone_image.this[0].id
+      href = pingone_image.this[0].uploaded_image[0].href
+    }
+  }
 
   dynamic "access_control_group_options" {
     for_each = var.group_access_control_id_list != null && length(var.group_access_control_id_list) > 0 ? [true] : []

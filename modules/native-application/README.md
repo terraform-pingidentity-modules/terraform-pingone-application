@@ -1,3 +1,3 @@
-# single-page-application
+# native-application
 
-Manage a Single Page Application.
+Manage a Native Application, including Apple and Android authenticator settings.

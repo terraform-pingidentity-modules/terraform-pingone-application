@@ -20,6 +20,8 @@ module "mobile_native_application" {
   name           = "Example Mobile Application"
   description    = "Example Mobile Application that uses the Native type of application"
   enabled        = true
+
+  image_file_location = "./assets/image-logo.png"
   
   # Apple
   mobile_app_bundle_id                        = var.mobile_app_bundle_id
