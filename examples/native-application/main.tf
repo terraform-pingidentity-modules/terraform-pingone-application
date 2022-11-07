@@ -21,6 +21,8 @@ module "native_application" {
   description    = "Example Native Application"
   enabled        = true
 
+  image_file_location = "./assets/image-logo.png"
+
   grant_types     = ["AUTHORIZATION_CODE"]
   response_types  = ["CODE"]
   

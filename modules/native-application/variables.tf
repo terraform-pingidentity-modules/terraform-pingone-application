@@ -114,6 +114,12 @@ variable "openid_scopes" {
   default     = []
 }
 
+variable "image_file_location" {
+  description = "A filesystem path to an image file to be used as the application icon."
+  type        = string
+  default = null
+}
+
 ## Mobile App specific
 
 variable "mobile_app_bundle_id" {

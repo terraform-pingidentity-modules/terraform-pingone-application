@@ -20,6 +20,8 @@ module "spa_application" {
   name           = "Example SPA"
   description    = "Example Single Page Application"
   enabled        = true
+
+  image_file_location = "./assets/image-logo.png"
   
   group_access_control_id_list = [
     pingone_group.my_group.id
