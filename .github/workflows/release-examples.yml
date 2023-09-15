@@ -20,7 +20,7 @@ jobs:
         run: |
           for d in examples/*; do
             name=$(echo $d | sed -e "s/ /_/g")
-            zip -r "${name}.zip" "$d"
+            zip -jr "${name}.zip" "$d"
           done
       - 
         name: Release Zip Artifacts
