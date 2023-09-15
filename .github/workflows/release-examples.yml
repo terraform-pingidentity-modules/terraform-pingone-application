@@ -1,0 +1,30 @@
+# This GitHub action can publish assets for release when a tag is created.
+# Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
+#
+name: Release Examples
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  example-archiver:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - 
+        name: Zip Examples
+        run: |
+          for d in examples/*; do
+            name=$(echo $d | sed -e "s/ /_/g")
+            zip -jr "${name}.zip" "$d"
+          done
+      - 
+        name: Release Zip Artifacts
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            examples/*.zip
